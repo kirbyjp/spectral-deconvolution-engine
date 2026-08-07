@@ -62,6 +62,8 @@ The physical architecture is structured as a cumulative, modular hierarchy, allo
   * *Includes all Tier 1 capabilities, plus:*
   * *Hardware Additions:* A low-cost microcontroller (ESP32/Arduino) mounted via a 3D-printed hot-shoe or lens bracket, paired with an external high-frequency IMU module and a small stepper motor for controlled translation/slew.
   * *Operational Scope:* Enables active dwell-time modulation and deterministic telemetry logging. For makers using existing DSLRs, the hot-shoe mounted IMU logs real-time micro-jitters directly to a companion file (that may require high-frequency filtering to isolate structural shutter-shock transients during actuation), feeding an exact motion trace for PSF reconstruction to the software without altering internal optics.
+  * *Minimum IMU Specification (Pending Measurement):*  
+Minimum IMU sampling rate and noise-density requirements will be added once shutter-shock and stepper micro-vibration frequencies are empirically measured. See Section 5 for the governing Nyquist and noise-floor relations that determine these thresholds.
 * **Tier 3: The Dual-Path Research Rig (Advanced / Makerspace & Institutional Level)**
   * *Includes all Tier 1 & Tier 2 capabilities, plus:*
   * *Hardware Additions & Architectural Paths:* An optical non-polarizing beam splitter cube and a modular 3D-printed optical chassis, deployable via two implementation paths depending on resources:
