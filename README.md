@@ -14,6 +14,7 @@ This framework presents an open-source, low-cost instrumentation design that byp
 ---
 
 ## 1. Introduction
+* **The "Streak-as-Data" Paradigm Shift:** Challenging the modern astronomical dogma that light streaks (such as satellite constellations or tracking drift) represent ruined data. By reframing motion and chromatic dispersion as multi-dimensional geometric encodings, this architecture turns every accidental or deliberate light trace into a simultaneous point source and high-resolution spectrum—unlocking multi-object spectroscopy without a single moving optical part.
 * **The High Cost of Precision:** Traditional spectroscopy and hyperspectral imaging are restricted by expensive, mechanically complex instrumentation.
 * **The Democratization of Science:** Applying the Pareto principle (80/20 rule) via open-source hardware, consumer-grade monochrome sensors, and computational correction.
 * **Distinction from Heuristic Image Editing:** Establishing this system as a rigorous, radiometric physical inversion framework rather than a perceptual image-editing tool (e.g., raster filters). Unlike consumer software, the architecture preserves raw radiometric flux conservation, ingests hardware IMU telemetry, and performs quantitative spatial-spectral reconstruction.
@@ -24,13 +25,30 @@ This framework presents an open-source, low-cost instrumentation design that byp
 ---
 
 ## 2. Theoretical Foundations: The Convolutional Forward Model
-* **Defining the "Crime":** Modeling how the physical world and the optical system alter incoming light before it hits the sensor.
-* **The Forward Equation:** Framing the system as a mathematical convolution ($Image = Source * Kernel$).
-* **The "Family of PSFs":** *A perfect image gives you one PSF. A flawed image gives you a family of PSFs.* Intentional dispersion and motion preserve directional, chromatic, and temporal structure rather than collapsing data into a single point.
-* **The Composite Kernel (PSF):** The superposition of two distinct physical phenomena:
-  * *Spatial Convolution:* Camera motion, structural jitter, and deliberate spatial skewing.
-  * *Spectral Convolution:* Chromatic dispersion stretching white light into continuous wavelength profiles.
-* **Kernel Separability:** Under controlled conditions, spatial and spectral kernels can be treated as separable components, simplifying inverse reconstruction.
+* **Defining the "Crime" (The Physics of Optical Corruption):** Modeling how pristine incoming radiance is systematically corrupted before reaching digitization. The "crime" occurs across three distinct physical dimensions during the finite integration window (shutter open time $T$):
+  * *Temporal Integration:* The camera shutter remains open over time $T$, acting as a temporal integrator that captures a continuous accumulation of light while motion occurs.
+  * *Kinematic Displacement:* Relative motion between the scene and the sensor (whether from camera structural jitter, tracking drift, or deliberate spatial skewing) drags point sources of light across physical pixels, turning discrete point targets into continuous spatial trails.
+  * *Wavelength-Dependent Refraction (Dispersion):* Optical elements bend varying frequencies of light at slightly different angles, forcing white-light point sources to physically fracture into continuous spectral dispersion vectors.
+  * Together, these phenomena destroy the spatial-spectral integrity of the raw scene, transforming high-contrast point data into a degraded, overlapping convolution map.
+* **The Forward Equation (Mathematical Modeling):** Formalizing image formation as a linear system affected by convolution and additive noise. In continuous spatial coordinates $(x,y)$, the optical degradation process is expressed as:
+  $$I(x,y) = [S(x,y) * K(x,y)] + N(x,y)$$
+  where:
+  * $I(x,y)$ represents the final degraded, motion-smeared, and chromatically dispersed image recorded by the digital sensor.
+  * $S(x,y)$ denotes the ideal, pristine source scene (the ground truth prior to optical corruption).
+  * $K(x,y)$ is the composite system kernel (Point Spread Function / Line Spread Function) dictated by sensor kinematics, optical geometry, and spatial skewing.
+  * $N(x,y)$ accounts for stochastic sensor noise, including photon shot noise, electronic read noise, and thermal dark current.
+  * $*$ denotes the 2D spatial convolution operator.
+  * In the discrete digital domain of the camera sensor, this translates to a pixel-grid operation where every individual pixel value in $I$ is a weighted linear superposition of surrounding source pixels distributed across space by $K$.
+* **Defining the Point Spread Function (PSF):** Formally defining the PSF as the spatial impulse response of the optical and digital imaging system—describing mathematically how a theoretical, infinitely small point source of light is "spread" or blurred across adjacent pixels due to diffraction, lens aberrations, and sensor limitations.
+* **The "Family of PSFs" (From Defect to Data):** *A perfect image gives you one PSF. A flawed image gives you a family of PSFs.* In traditional static imaging, a uniform PSF is treated as an optical defect to be minimized or removed to collapse data back into a singular point. In contrast, our framework leverages a structured, multi-dimensional *family of PSFs*. Intentional spatial motion (jitter/translation) and chromatic dispersion transform the PSF from a static blur blob into an information-rich geometric manifold that explicitly encodes directional motion vectors, temporal evolution, and continuous spectral gradients.
+* **The Composite Kernel ($K$):** Mathematically defining the total system kernel as a structured superposition (or cascaded convolution) of two distinct physical domains:
+  * *Spatial Convolution ($K_{\text{spatial}}$):* The kinematic component governing geometric distribution. It maps the temporal trajectory of camera translation, structural jitter, and user-guided spatial skewing across the 2D sensor grid.
+  * *Spectral Convolution ($K_{\text{spectral}}$):* The optical component governing chromatic distribution. It maps radiant energy from a source across spatial coordinates as a continuous function of wavelength ($\lambda$).
+  * Together, these phenomena fuse into a unified composite kernel $K(x,y)$, where every point in the image space is simultaneously subjected to geometric displacement and wavelength-dependent dispersion.
+* **Kernel Separability:** Establishing the mathematical condition that allows the composite kernel to be factored into decoupled or sequentially independent components—specifically, treating spatial motion correction and spectral dispersion extraction as orthogonal or cascading operations. Under the constraint of high-frequency hardware telemetry and controlled dispersion geometry, kernel separability drastically reduces computational complexity, transforming an otherwise intractable multi-dimensional deconvolution problem into stable, sequential 1D and 2D inversions that cleanly feed our modular processing pipeline.
+* **Discrete Vector-Gradient Inversion (Arithmetic-Based Reconstruction):** Unlike classical deconvolution frameworks relying on continuous integral equations or Fourier-domain division (which risk instability near zero-frequency components), our inverse pipeline operates entirely in the discrete spatial domain. Representing the motion path as a parametric curve $\gamma(t) = (x(t), y(t))$, reconstruction proceeds via spatial-temporal flux reassignment:
+  $$S_{\text{est}}(x_0, y_0) = \sum_{t \in \gamma^{-1}(x_0, y_0)} I(x(t), y(t)) \cdot w(t)$$
+  where $w(t)$ incorporates exposure-time normalization, logarithmic scaling, and finite PSF support. This formulation bypasses continuous spectral division, reducing inversion to stable coordinate remapping and additive/subtractive flux binning.
 
 ---
 
