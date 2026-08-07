@@ -47,7 +47,7 @@ This framework presents an open-source, low-cost instrumentation design that byp
 * **Active Kinematics & Slew Mechanics:** Dynamically modulating the speed of the dispersion mechanism during data collection.
 * **Dwell-Time Engineering:** Speeding up over blindingly bright continuum peaks to prevent pixel saturation, and slowing down over weak absorption lines to elevate faint photons above the read-noise floor.
 * **Comparison to Bracketing:** Eliminating multi-exposure motion-blur risks by shifting dynamic range control to spatial velocity.
-* **Single-Shot Dynamic Range Advantage: Unlike exposure bracketing, which introduces motion-ghosting and alignment artifacts when targets shift between frames, dwell-time modulation performs a continuous single sweep. The velocity curve itself manages dynamic range, eliminating multi-frame registration errors entirely.
+* Single-Shot Dynamic Range Advantage: Unlike exposure bracketing, which introduces motion-ghosting and alignment artifacts when targets shift between frames, dwell-time modulation performs a continuous single sweep. The velocity curve itself manages dynamic range, eliminating multi-frame registration errors entirely.
 * **Pixel Dilution Avoidance:** Unlike HDR bracketing, dwell-time modulation prevents faint spectral features from being buried under noise due to multi-frame averaging.
 
 ---
