@@ -9,7 +9,7 @@
 
 ## Abstract
 
-This framework presents an open-source, low-cost instrumentation design that bypasses traditional, expensive optical hardware ($15k+ lab units) by leveraging computational optics and telemetry. Operating under the principle that **"flawed images are not failures — they are compressed multidimensional measurements,"** the system implements a closed-loop **convolution–deconvolution** pipeline. It couples a dual-path monochrome sensor layout with active dwell-time modulation and multi-IMU hardware telemetry to extract high-resolution 3D depth and quantitative spectroscopy at ~80% of laboratory performance at <1% of the cost. The system embodies **computational self-awareness**, using its own telemetry-derived PSF as a corrective model.
+This framework presents an open-source, low-cost instrumentation design that bypasses traditional, expensive optical hardware ($15k+ lab units) by leveraging computational optics and telemetry. Operating under the principle that **"flawed images are not failures — they are compressed multidimensional measurements,"** the system implements a closed-loop **convolution–deconvolution** pipeline. It couples a dual-path monochrome sensor layout with active dwell-time modulation and multi-IMU hardware telemetry to extract high-resolution 3D depth and quantitative spectroscopy at ~80% (projected) of laboratory performance at <1% of the cost. The system embodies **computational self-awareness**, using its own telemetry-derived PSF as a corrective model.
 
 ---
 
@@ -48,8 +48,7 @@ This framework presents an open-source, low-cost instrumentation design that byp
 * **Kernel Separability:** Establishing the mathematical condition that allows the composite kernel to be factored into decoupled or sequentially independent components—specifically, treating spatial motion correction and spectral dispersion extraction as orthogonal or cascading operations. Under the constraint of high-frequency hardware telemetry and controlled dispersion geometry, kernel separability drastically reduces computational complexity, transforming an otherwise intractable multi-dimensional deconvolution problem into stable, sequential 1D and 2D inversions that cleanly feed our modular processing pipeline.
 * **Discrete Vector-Gradient Inversion (Arithmetic-Based Reconstruction):** Unlike classical deconvolution frameworks relying on continuous integral equations or Fourier-domain division (which risk instability near zero-frequency components), our inverse pipeline operates entirely in the discrete spatial domain. Representing the motion path as a parametric curve $\gamma(t) = (x(t), y(t))$, reconstruction proceeds via spatial-temporal flux reassignment:
   $$S_{\text{est}}(x_0, y_0) = \sum_{t \in \gamma^{-1}(x_0, y_0)} I(x(t), y(t)) \cdot w(t)$$
-* *Reconstruction Weight Function:*  
-The reconstruction weight $w(t)$ is proportional to the dwell-time function $\tau(t) = \Delta x / v(t)$, which governs how flux is reassigned along the motion path. See Section 4 for the full dwell-time-derived form of $w(t)$. This formulation bypasses continuous spectral division, reducing inversion to stable coordinate remapping and additive/subtractive flux binning.
+* *Reconstruction Weight Function:* The reconstruction weight $w(t)$ is proportional to the dwell-time function $\tau(t) = \Delta x / v(t)$, which governs how flux is reassigned along the motion path. See Section 4 for the full dwell-time-derived form of $w(t)$. This formulation bypasses continuous spectral division, reducing inversion to stable coordinate remapping and additive/subtractive flux binning.
 
 ---
 
