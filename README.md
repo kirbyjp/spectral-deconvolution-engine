@@ -11,6 +11,8 @@
 
 This framework presents an open-source, low-cost instrumentation design that bypasses traditional, expensive optical hardware ($15k+ lab units) by leveraging computational optics and telemetry. Operating under the principle that **"flawed images are not failures — they are compressed multidimensional measurements,"** the system implements a closed-loop **convolution–deconvolution** pipeline. It couples a dual-path monochrome sensor layout with active dwell-time modulation and multi-IMU hardware telemetry to extract high-resolution 3D depth and quantitative spectroscopy at ~80% (projected) of laboratory performance at <1% of the cost. The system embodies **computational self-awareness**, using its own telemetry-derived PSF as a corrective model.
 
+**Keywords:** blind and non-blind deconvolution, point spread function estimation, vector-gradient field analysis, arithmetic-based inversion, telemetry-driven PSF reconstruction, low-cost spectrometry, compressed sensing, coded apertures, dwell-time modulation, citizen-science instrumentation
+
 ---
 
 ## 1. Introduction
