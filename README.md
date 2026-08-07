@@ -60,14 +60,12 @@ This framework presents an open-source, low-cost instrumentation design that byp
 
 ---
 
-## 6. Computational Processing: The Deconvolutional Inverse Pipeline
-* **Initial Wavelength Calibration:** Mapping pixel position to exact wavelengths ($\lambda$) using a known baseline reference source before capturing unknown targets.
-* **Inverting the Forward Model:** Translating the forward convolution into a solvable inverse problem.
-* **Deterministic Deconvolution:** Utilizing synchronized IMU/VCM telemetry logs and anchor frames as a direct hardware-level PSF to mathematically reverse blur and separate split-path channels.
-* **Channel Realignment:** Using homography and PSF-derived geometric correction to precisely overlay the sharp anchor channel onto the dispersive channel.
-* **Edge Mapping & Signal Reconstruction:** Using Radon transforms for advanced kernel refinement where minor drift occurs.
-* **False-Color Spectral Extraction:** Translating monochrome spatial-wavelength intensity logs back into quantitative 1D spectra and human-interpretable visualizations.
-* **NASA Narrowband Analogy:** False-color reconstruction parallels NASA’s narrowband imaging pipelines, converting non-visible spectral data into interpretable color composites.
+## 6. Computational Processing: The Vector-Gradient & Deconvolution Pipeline
+* **Initial Wavelength Calibration:** Mapping pixel position to exact wavelengths ($\lambda$) using a known baseline reference source before processing targets.
+* **Inverting the Forward Model:** Translating the forward convolution into a solvable inverse problem across both telemetry-driven (non-blind) and image-driven (blind) operational modes.
+* **Vector-Gradient Field Analysis:** Bypassing classical edge-fitting transforms in favor of spatial-spectral vector-gradient analysis. By computing directional derivatives, magnitude, and orientation fields, the engine extracts motion vectors, chromatic spread, and stellar PSF signatures directly from uninstrumented legacy data and astronomical plates.
+* **Deterministic vs. Estimated Deconvolution:** Utilizing synchronized IMU/VCM telemetry logs (when hardware is present) or vector-gradient estimated kernels (for legacy data) to mathematically reverse blur and separate split-path channels.
+* **Channel Realignment & Reconstruction:** Using homography and PSF-derived geometric correction to overlay anchor channels, reconstruct faint absorption lines, and translate monochrome intensity logs into quantitative 1D spectra (paralleling NASA narrowband imaging pipelines).
 
 ---
 
