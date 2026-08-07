@@ -78,6 +78,8 @@ Motorized GoTo or tracking telescope mounts can serve as an alternative motion-g
 
 This integration path is optional and intended for users already operating motorized mounts; it complements Tier 2 and Tier 3 by offering a low-noise, programmable macro-motion source for sky-sweep experiments.
 
+"will be added once fvibf_{\text{vib}} fvib is measured"
+
 ---
 
 ## 4. Active Dwell-Time Modulation (Hardware-Level HDR)
