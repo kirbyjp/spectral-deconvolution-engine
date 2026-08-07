@@ -132,14 +132,27 @@ This integration path is optional and intended for users already operating motor
   Telescope-mount sweeps provide smooth macro-motion profiles that can be timestamp-aligned with exposure metadata to drive modulation without external inertial hardware.  
   In all cases, the velocity and dwell-time curve become hardware-level metadata passed to the reconstruction engine.
 
-
 ---
 
-## 5. Multi-IMU Redundancy & Telemetry Logging
-* **Passive Kinematics & High-Hz Tracking:** Bypassing OS smoothing filters by using independent, high-frequency external IMUs (1,000+ Hz) to log raw physical motion.
-* **Redundant Sensor Fusion:** Cross-checking multi-IMU arrays rigidly locked to the optical block to isolate structural flex and jitter.
-* **Structural Flex Mapping:** Telemetry reveals micro-scale bending or torsion in the optical block, enabling correction without rigid mounts.
-* **Telemetry as a Deterministic PSF:** Using real-time error logs to replace expensive mechanical rigidity with self-aware computational reconstruction.
+## 5. Multi-IMU Telemetry Processing and Motion-Trace Reconstruction
+
+* **Passive Kinematics and High-Frequency Tracking:**  
+  External IMUs bypass OS-level smoothing by providing raw inertial data at high sample rates. The required rate is set by Nyquist: if the highest structural vibration frequency is $f_{\text{vib}}$, then IMU sampling must satisfy $f_s \geq 2f_{\text{vib}}$ to avoid aliasing fast jitter into false low-frequency motion. This establishes a real lower bound for usable telemetry rather than an arbitrary performance target.
+
+* **Sensor-Fusion Method:**  
+  Redundant IMUs rigidly locked to the optical block are fused into a single motion estimate. Fusion may be performed through a Kalman filter, complementary filter, or weighted averaging, depending on hardware tier. The method combines gyro and accelerometer channels into a unified, bias-corrected inertial stream suitable for reconstructing $\gamma(t)$.
+
+* **Structural Flex Discrimination:**  
+  Spatially separated IMUs allow differential comparison. Common-mode motion corresponds to true sweep kinematics, while differential signals correspond to micro-scale flex or torsion in the optical block. This separation enables correction of structural deformation without requiring rigid mounts.
+
+* **IMU Noise Characterization:**  
+  Real IMUs exhibit bias drift and noise density limits. Allan variance analysis (or equivalent bias-instability characterization) determines whether telemetry-derived motion truth exceeds the accuracy of blind, image-only estimation. Below this noise floor, Tier 1 software-only reconstruction outperforms low-cost IMU hardware, establishing a practical minimum spec for Tier 2 modules.
+
+* **Coordinate-Frame Transformation:**  
+  IMU data is reported in the sensor’s local body frame. Reconstruction requires $\gamma(t)$ expressed in the optical/sensor-plane frame used in Section 2. A fixed transform maps inertial-frame rotations and translations into the coordinate system of the forward model. Tier 3’s dual-sensor configuration requires two transforms and synchronization.
+
+* **Telemetry as a Deterministic PSF:**  
+  Once fused, bias-corrected, and transformed, the inertial motion trace becomes a deterministic point-spread function. The telemetry-derived kernel replaces mechanical rigidity with computational certainty, enabling reconstruction of motion-smeared exposures using the same $K_{\text{spatial}}$ defined in Section 2.
 
 ---
 
