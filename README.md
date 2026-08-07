@@ -27,7 +27,7 @@ This framework presents an open-source, low-cost instrumentation design that byp
 ## 2. Theoretical Foundations: The Convolutional Forward Model
 * **Defining the "Crime" (The Physics of Optical Corruption):** Modeling how pristine incoming radiance is systematically corrupted before reaching digitization. The "crime" occurs across three distinct physical dimensions during the finite integration window (shutter open time $T$):
   * *Temporal Integration:* The camera shutter remains open over time $T$, acting as a temporal integrator that captures a continuous accumulation of light while motion occurs.
-  * *Kinematic Displacement:* Relative motion between the scene and the sensor (whether from camera structural jitter, tracking drift, or deliberate spatial skewing) drags point sources of light across physical pixels, turning discrete point targets into continuous spatial trails.
+  * *Kinematic Displacement:* Relative motion between the scene and the sensor (whether from camera structural jitter, tracking drift, or deliberate spatial skewing) drags point sources of light across physical pixels, turning discrete point targets into continuous spatial trails defined by a time-parameterized kinematic trajectory curve $\gamma(t)$.
   * *Wavelength-Dependent Refraction (Dispersion):* Optical elements bend varying frequencies of light at slightly different angles, forcing white-light point sources to physically fracture into continuous spectral dispersion vectors.
   * Together, these phenomena destroy the spatial-spectral integrity of the raw scene, transforming high-contrast point data into a degraded, overlapping convolution map.
 * **The Forward Equation (Mathematical Modeling):** Formalizing image formation as a linear system affected by convolution and additive noise. In continuous spatial coordinates $(x,y)$, the optical degradation process is expressed as:
@@ -35,7 +35,7 @@ This framework presents an open-source, low-cost instrumentation design that byp
   where:
   * $I(x,y)$ represents the final degraded, motion-smeared, and chromatically dispersed image recorded by the digital sensor.
   * $S(x,y)$ denotes the ideal, pristine source scene (the ground truth prior to optical corruption).
-  * $K(x,y)$ is the composite system kernel (Point Spread Function / Line Spread Function) dictated by sensor kinematics, optical geometry, and spatial skewing.
+  * $K(x,y)$ is the composite system kernel (Point Spread Function / Line Spread Function) parameterized by sensor kinematics, optical geometry, and spatial skewing along the motion path.
   * $N(x,y)$ accounts for stochastic sensor noise, including photon shot noise, electronic read noise, and thermal dark current.
   * $*$ denotes the 2D spatial convolution operator.
   * In the discrete digital domain of the camera sensor, this translates to a pixel-grid operation where every individual pixel value in $I$ is a weighted linear superposition of surrounding source pixels distributed across space by $K$.
