@@ -61,7 +61,7 @@ The physical architecture is structured as a cumulative, modular hierarchy, allo
 * **Tier 2: The Instrumented Single-Axis Rig (Intermediate / Robotics Club Level)**
   * *Includes all Tier 1 capabilities, plus:*
   * *Hardware Additions:* A low-cost microcontroller (ESP32/Arduino) mounted via a 3D-printed hot-shoe or lens bracket, paired with an external high-frequency IMU module and a small stepper motor for controlled translation/slew.
-  * *Operational Scope:* Enables active dwell-time modulation and deterministic telemetry logging. For makers using existing DSLRs, the hot-shoe mounted IMU logs real-time micro-jitters directly to a companion file (requiring high-frequency filtering to isolate structural shutter-shock transients during actuation), feeding an exact motion trace for PSF reconstruction to the software without altering internal optics.
+  * *Operational Scope:* Enables active dwell-time modulation and deterministic telemetry logging. For makers using existing DSLRs, the hot-shoe mounted IMU logs real-time micro-jitters directly to a companion file (that may require high-frequency filtering to isolate structural shutter-shock transients during actuation), feeding an exact motion trace for PSF reconstruction to the software without altering internal optics.
 * **Tier 3: The Dual-Path Research Rig (Advanced / Makerspace & Institutional Level)**
   * *Includes all Tier 1 & Tier 2 capabilities, plus:*
   * *Hardware Additions & Architectural Paths:* An optical non-polarizing beam splitter cube and a modular 3D-printed optical chassis, deployable via two implementation paths depending on resources:
