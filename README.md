@@ -9,7 +9,7 @@
 
 ## Abstract
 
-This framework presents an open-source, low-cost instrumentation design that bypasses traditional, expensive optical hardware ($15k+ lab units) by leveraging computational optics and telemetry. By treating optical aberrations and motion artifacts as intentional data-encoding dimensions ("flaws as features"), the system implements a closed-loop **convolution–deconvolution** pipeline. It couples a dual-path monochrome sensor layout with active dwell-time modulation and multi-IMU hardware telemetry to extract high-resolution 3D depth and quantitative spectroscopy at a fraction of standard costs. The system embodies **computational self-awareness**, using its own telemetry-derived PSF as a corrective model, achieving ~80% of laboratory performance at <1% of the cost.
+This framework presents an open-source, low-cost instrumentation design that bypasses traditional, expensive optical hardware ($15k+ lab units) by leveraging computational optics and telemetry. Operating under the principle that **"flawed images are not failures — they are compressed multidimensional measurements,"** the system implements a closed-loop **convolution–deconvolution** pipeline. It couples a dual-path monochrome sensor layout with active dwell-time modulation and multi-IMU hardware telemetry to extract high-resolution 3D depth and quantitative spectroscopy at ~80% of laboratory performance at <1% of the cost. The system embodies **computational self-awareness**, using its own telemetry-derived PSF as a corrective model.
 
 ---
 
@@ -18,16 +18,17 @@ This framework presents an open-source, low-cost instrumentation design that byp
 * **The Democratization of Science:** Applying the Pareto principle (80/20 rule) via open-source hardware, consumer-grade monochrome sensors, and computational correction.
 * **The "Flaw-as-Feature" Paradigm:** Harnessing chromatic dispersion and motion tracking as intentional data-encoding dimensions rather than discarding them.
 * **Computational Self-Awareness:** Replacing mechanical rigidity with a system that *knows its own convolution kernel* and corrects itself using telemetry-driven PSF estimation.
+* **Scientific Lineage:** This work extends the lineage of *coded apertures* and *compressed sensing* into low-cost instrumentation.
 
 ---
 
 ## 2. Theoretical Foundations: The Convolutional Forward Model
 * **Defining the "Crime":** Modeling how the physical world and the optical system alter incoming light before it hits the sensor.
 * **The Forward Equation:** Framing the system as a mathematical convolution ($Image = Source * Kernel$).
+* **The "Family of PSFs":** *A perfect image gives you one PSF. A flawed image gives you a family of PSFs.* Intentional dispersion and motion preserve directional, chromatic, and temporal structure rather than collapsing data into a single point.
 * **The Composite Kernel (PSF):** The superposition of two distinct physical phenomena:
   * *Spatial Convolution:* Camera motion, structural jitter, and deliberate spatial skewing.
   * *Spectral Convolution:* Chromatic dispersion stretching white light into continuous wavelength profiles.
-* **PSF as Hardware Signature:** The point spread function becomes a deterministic fingerprint of the system’s physical behavior.
 * **Kernel Separability:** Under controlled conditions, spatial and spectral kernels can be treated as separable components, simplifying inverse reconstruction.
 
 ---
@@ -46,9 +47,8 @@ This framework presents an open-source, low-cost instrumentation design that byp
 ## 4. Active Dwell-Time Modulation (Hardware-Level HDR)
 * **Active Kinematics & Slew Mechanics:** Dynamically modulating the speed of the dispersion mechanism during data collection.
 * **Dwell-Time Engineering:** Speeding up over blindingly bright continuum peaks to prevent pixel saturation, and slowing down over weak absorption lines to elevate faint photons above the read-noise floor.
-* **Comparison to Bracketing:** Eliminating multi-exposure motion-blur risks by shifting dynamic range control to spatial velocity.
 * **Single-Shot Dynamic Range Advantage:** Unlike exposure bracketing, which introduces motion-ghosting and alignment artifacts when targets shift between frames, dwell-time modulation performs a continuous single sweep. The velocity curve itself manages dynamic range, eliminating multi-frame registration errors entirely.
-* **Pixel Dilution Avoidance:** Unlike HDR bracketing, dwell-time modulation prevents faint spectral features from being buried under noise due to multi-frame averaging.
+* **Pixel Dilution Avoidance:** Prevents faint spectral features from being buried under noise due to multi-frame averaging.
 
 ---
 
@@ -80,7 +80,9 @@ This framework presents an open-source, low-cost instrumentation design that byp
 
 ## 8. Conclusion and Future Horizons
 * **Summary of Contributions:** Proving that computational telemetry and closed-loop modeling can substitute for high-cost physical engineering.
-* **Future Horizons:** Scaling toward solid-state Optical Phased Arrays (OPAs), real-time spectral video, and distributed citizen-science deployment networks.
+* **Future Horizons:** 
+  * Scaling toward solid-state Optical Phased Arrays (OPAs), real-time spectral video, and distributed citizen-science deployment networks.
+  * *Future applications may also extend into microscopy, archival astronomy, and forensic imaging, where flawed exposures contain recoverable multidimensional structure.*
 
 ---
 
