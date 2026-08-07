@@ -52,14 +52,22 @@ This framework presents an open-source, low-cost instrumentation design that byp
 
 ---
 
-## 3. System Hardware Architecture
-* **The Dual-Path Split-Sensor Design:** 
-  * Utilizing a low-cost optical beam splitter to divide a single lens input across two parallel monochrome channels.
-  * **Channel A (The Sharp Anchor):** Provides un-smeared structural boundaries and high-precision spatial coordinates ($X, Y$).
-  * **Channel B (The Dispersive/Defocused Channel):** Houses the intentional chromatic dispersion profile for spectroscopy and depth-from-defocus calculations.
-* **Cross-Channel Geometric Registration (Homography):** Computational mapping to mathematically align and register the Sharp Anchor layer over the Dispersive layer, compensating for mechanical tolerances.
-* **Component Selection:** Consumer-grade CMOS/CCD sensors, 3D-printed modular housings, and open-source microcontrollers chosen to maximize performance per dollar.
-* **Control Ecosystem:** Low-cost microcontrollers (e.g., ESP32) ensuring microsecond-precise hardware timing and shutter synchronization.
+## 3. System Hardware Architecture (Cumulative Modular Tiers)
+The physical architecture is structured as a cumulative, modular hierarchy, allowing users to scale complexity and capability based on their resources and institutional backing—ranging from software-only processing to advanced, dual-path research systems:
+
+* **Tier 1: The Software-Only Tier (Beginner / Classroom Level)**
+  * *Required Components:* A standard consumer camera (smartphone, webcam, or existing DSLR) + a computer running the vector-gradient deconvolution engine.
+  * *Operational Scope:* Zero hardware modifications required. Processes pre-existing legacy footage, motion-blurred terrestrial video, or simulated synthetic data using pure blind and semi-blind software-driven kernel estimation.
+* **Tier 2: The Instrumented Single-Axis Rig (Intermediate / Robotics Club Level)**
+  * *Includes all Tier 1 capabilities, plus:*
+  * *Hardware Additions:* A low-cost microcontroller (ESP32/Arduino) mounted via a 3D-printed hot-shoe or lens bracket, paired with an external high-frequency IMU module and a small stepper motor for controlled translation/slew.
+  * *Operational Scope:* Enables active dwell-time modulation and deterministic telemetry logging. For makers using existing DSLRs, the hot-shoe mounted IMU logs real-time micro-jitters directly to a companion file (requiring high-frequency filtering to isolate structural shutter-shock transients during actuation), feeding an exact motion trace for PSF reconstruction to the software without altering internal optics.
+* **Tier 3: The Dual-Path Research Rig (Advanced / Makerspace & Institutional Level)**
+  * *Includes all Tier 1 & Tier 2 capabilities, plus:*
+  * *Hardware Additions & Architectural Paths:* An optical non-polarizing beam splitter cube and a modular 3D-printed optical chassis, deployable via two implementation paths depending on resources:
+    * *Path A (Single-Sensor Split-Field / Maker-Space Optimized):* Projects Channel A (anchor) and Channel B (dispersive) onto two distinct zones of a single high-resolution, global-shutter monochrome CMOS sensor (no IR-cut filter). This natively eliminates clock drift, optical path length discrepancies, USB bus latency, and multi-sensor synchronization hurdles.
+    * *Path B (Dual-Sensor / Institutional Research Grade):* Utilizes dual synchronized global-shutter monochrome CMOS sensors paired with a redundant multi-IMU array (2–3 synchronized inertial sensors utilizing basic sensor fusion or master clock alignment to isolate structural flex and vibration).
+  * *Operational Scope:* The full dual-path architecture. Splits a single optical wavefront into parallel channels—Channel A serving as a sharp spatial anchor, and Channel B capturing dispersed/defocused data simultaneously for high-precision, non-blind astrophysical and spatial-spectral reconstruction.
 
 ---
 
