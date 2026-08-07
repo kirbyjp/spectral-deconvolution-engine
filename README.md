@@ -207,9 +207,34 @@ This integration path is optional and intended for users already operating motor
 ---
 
 ## 7. Cost-Benefit and Scientific Utility Analysis
-* **Performance Benchmarking:** Evaluating the output of a sub-$500 DIY dual-path rig against mid-tier prosumer ($4k–$18k) and laboratory-grade ($15k+) systems.
-* **The Sensitivity-Resolution Trade-off:** Analyzing photon dispersion limits relative to the sensor's read-noise floor.
-* **Citizen-Science Deployment:** Low-cost, mass-producible architecture enables distributed environmental monitoring, educational spectroscopy, and global-scale scientific participation.
+
+* **Performance Metrics Defined:**  
+  Comparative performance is evaluated across four quantitative axes: spectral resolving power ($R = \lambda/\Delta\lambda$), wavelength calibration accuracy, signal-to-noise ratio at a defined flux threshold, and effective dynamic range (see Section 4). These metrics define what "~80% of laboratory performance" means in the Abstract.
+
+* **Basis for Comparison:**  
+  Benchmark figures are currently projected from component-level specifications and the theoretical model developed in this document, not from empirical measurement against a reference instrument. Validation against a calibrated laboratory spectrometer is planned future work, consistent with this document's status as a conceptual architecture.
+
+* **Design Philosophy (Pareto Framing):**  
+  The system is deliberately engineered around the Pareto principle: the 80% of laboratory-grade performance that matters most for citizen-science and educational use, achieved at roughly 1% of laboratory-grade cost. This is a stated design target guiding architectural tradeoffs throughout this document (see Section 4's dwell-time HDR and Section 5's telemetry economy-tier hardware bounds), not a validated benchmark result. It is treated as a hypothesis for the planned validation work described above.
+
+* **Performance Benchmarking:**  
+  Evaluating the projected output of a sub-$500 DIY dual-path rig against mid-tier prosumer ($4k-$18k) and laboratory-grade ($15k+) systems, using the metrics defined above.
+
+* **The Sensitivity-Resolution Trade-off:**  
+  Spectral resolving power and sensitivity are in direct tension. Finer wavelength dispersion (higher $R$) spreads a fixed photon budget across more resolution elements, reducing photons per element and lowering SNR for a given exposure. This trade-off is governed by the same dwell-time modulation described in Section 4, which can partially offset it by allocating longer dwell time to under-sampled spectral regions.
+
+* **Itemized Cost Structure by Tier:**  
+  Approximate cost ranges corresponding to the hardware tiers defined in Section 3: Tier 1 (software-only, cost of a consumer camera the user likely already owns), Tier 2 (adds microcontroller, IMU, and stepper motor, low tens of dollars), Tier 3 (adds beam splitter and second sensor or IMU array, remainder of the sub-$500 target). This ties the cost claim directly back to the hardware architecture rather than leaving it as an unsupported round number.
+
+* **Known Performance Gaps vs. Laboratory-Grade Systems:**  
+  This architecture is not expected to match dedicated laboratory spectrometers in absolute flux calibration accuracy, optical throughput, or immunity to atmospheric effects for ground-based astronomical use. Stating these limits explicitly scopes the claimed 80% performance figure rather than implying general equivalence.
+
+* **Validation Roadmap:**  
+  Planned validation includes calibration against a reference laboratory spectrometer, controlled test-target exposures to measure resolving power and wavelength accuracy, and repeatability trials across independently built units. These steps will convert the projected performance estimates into measured benchmarks.
+
+* **Citizen-Science Deployment:**  
+  Low-cost, mass-producible architecture enables distributed environmental monitoring, educational spectroscopy, and global-scale scientific participation. Open-source hardware and a shared data format would allow independently built units to contribute comparable, poolable measurements.
+
 
 ---
 
