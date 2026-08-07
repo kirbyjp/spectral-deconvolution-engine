@@ -68,6 +68,15 @@ The physical architecture is structured as a cumulative, modular hierarchy, allo
     * *Path A (Single-Sensor Split-Field / Maker-Space Optimized):* Projects Channel A (anchor) and Channel B (dispersive) onto two distinct zones of a single high-resolution, global-shutter monochrome CMOS sensor (no IR-cut filter). This natively eliminates clock drift, optical path length discrepancies, USB bus latency, and multi-sensor synchronization hurdles.
     * *Path B (Dual-Sensor / Institutional Research Grade):* Utilizes dual synchronized global-shutter monochrome CMOS sensors paired with a redundant multi-IMU array (2–3 synchronized inertial sensors utilizing basic sensor fusion or master clock alignment to isolate structural flex and vibration).
   * *Operational Scope:* The full dual-path architecture. Splits a single optical wavefront into parallel channels—Channel A serving as a sharp spatial anchor, and Channel B capturing dispersed/defocused data simultaneously for high-precision, non-blind astrophysical and spatial-spectral reconstruction.
+ 
+### Telescope Mount Telemetry Integration (Optional Motion Source)
+Motorized GoTo or tracking telescope mounts can serve as an alternative motion-guidance source for astronomical sweeps. When commanded through ASCOM or INDI, the mount can execute smooth, programmable sky-scan trajectories and provide a deterministic macro-motion path $\gamma(t)$ derived from RA/DEC updates or encoder-level telemetry.
+
+* **Smooth Macro-Motion Advantage:** Telescope sweeps are mechanically stable and typically smoother than handheld or IMU-driven rigs. This makes them well-suited for controlled dwell-time modulation, spectral streaking, and long-exposure motion-based reconstruction where clean, low-frequency motion is preferred.
+
+* **Logging Integration:** ASCOM/INDI motor traces can be timestamped and aligned with the camera’s exposure metadata, allowing the motion path $\gamma(t)$ to be synchronized with the imaging sequence. This provides a deterministic sweep profile without requiring external inertial hardware.
+
+This integration path is optional and intended for users already operating motorized mounts; it complements Tier 2 and Tier 3 by offering a low-noise, programmable macro-motion source for sky-sweep experiments.
 
 ---
 
