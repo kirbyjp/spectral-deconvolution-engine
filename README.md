@@ -16,6 +16,7 @@ This framework presents an open-source, low-cost instrumentation design that byp
 ## 1. Introduction
 * **The High Cost of Precision:** Traditional spectroscopy and hyperspectral imaging are restricted by expensive, mechanically complex instrumentation.
 * **The Democratization of Science:** Applying the Pareto principle (80/20 rule) via open-source hardware, consumer-grade monochrome sensors, and computational correction.
+* **Distinction from Heuristic Image Editing:** Establishing this system as a rigorous, radiometric physical inversion framework rather than a perceptual image-editing tool (e.g., raster filters). Unlike consumer software, the architecture preserves raw radiometric flux conservation, ingests hardware IMU telemetry, and performs quantitative spatial-spectral reconstruction.
 * **The "Flaw-as-Feature" Paradigm:** Harnessing chromatic dispersion and motion tracking as intentional data-encoding dimensions rather than discarding them.
 * **Computational Self-Awareness:** Replacing mechanical rigidity with a system that *knows its own convolution kernel* and corrects itself using telemetry-driven PSF estimation.
 * **Scientific Lineage:** This work extends the lineage of *coded apertures* and *compressed sensing* into low-cost instrumentation.
