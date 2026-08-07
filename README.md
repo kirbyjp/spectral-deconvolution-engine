@@ -185,6 +185,8 @@ This integration path is optional and intended for users already operating motor
 **Figure 1.** Module 1 path rectification example. Red segment marks the smear trail; gold segment marks the flux-reassignment target.  
 ![Figure 1](https://raw.githubusercontent.com/kirbyjp/spectral-deconvolution-engine/main/images/module1-path-rectification-example.png)
 
+ * Multi-Point Sampling for Non-Stationary Kernels:* For scenes with significant radial or transverse motion components (e.g., an object approaching or receding from the camera), a single global motion vector is insufficient, since perspective projection causes the apparent motion vector to vary with depth (see Section 7). Placing two or more red/gold marker pairs at distinct positions along the target allows the engine to detect this variation directly: matching vectors confirm uniform motion and validate the single-γ(t)\gamma(t) γ(t) pipeline, while diverging vectors indicate a depth-dependent kernel. With two markers, the motion field is linearly interpolated between them; with three or more, a higher-order curve can be fit to better approximate the underlying perspective-driven variation. This provides a practical, empirically-grounded partial correction for foreshortening without requiring explicit depth estimation or camera calibration.
+
 * **Module 2: Software-Guided Spectra and Automatic Isolation:**  
   Employing spatial-spectral vector-gradient analysis to automatically sample intensity profiles, identify emission lines, and isolate spectral slices without relying on manual user drawing.
 
