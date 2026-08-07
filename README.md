@@ -98,14 +98,17 @@ This framework presents an open-source, low-cost instrumentation design that byp
 
 ---
 
-## 8. Conclusion and Future Horizons
-* **Summary of Contributions:** Proving that computational telemetry and closed-loop modeling can substitute for high-cost physical engineering.
-* **Future Horizons:** 
-  * Scaling toward solid-state Optical Phased Arrays (OPAs), real-time spectral video, and distributed citizen-science deployment networks.
-  * *Future applications may also extend into microscopy, archival astronomy, and forensic imaging, where flawed exposures contain recoverable multidimensional structure.*
+### 8. Conclusion and Future Horizons
+* **Summary of Contributions:** This work demonstrates that computational telemetry, vector-gradient field analysis, and closed-loop spatial-spectral modeling can successfully substitute for high-cost physical engineering. By treating motion blur and chromatic dispersion as "compressed multidimensional measurements" rather than data failures, we establish a robust, low-cost instrument architecture.
+* **Computational Simplicity (From Calculus to Arithmetic):** By replacing heavy, continuous frequency-domain integral equations with discrete spatial vector mapping and flux reassignment, the algorithm bypasses complex calculus. It functions fundamentally through high-speed spatial binning and coordinate addition/subtraction, opening the door for real-time edge-computing execution on lightweight microcontrollers.
+* **The Space-Sweep Vision (Wide-Field Surveys):** The ultimate evolution of this architecture points toward wide-field space-based survey cameras. By embracing intentional, continuous sensor sweeps, a single exposure can simultaneously capture high-precision astrometry and multi-object slitless spectroscopy for thousands of stars, asteroids, and transients concurrently—eliminating the need for expensive mechanical tracking mounts or physical spectrograph slits.
+* **Quantum-Stabilized Motion Truth (QGPS Integration):** Looking toward next-generation aerospace systems, the future integration of Quantum GPS (QGPS) via cold-atom interferometry addresses the ultimate bottleneck of inertial tracking: sensor drift. By providing absolute, drift-free motion telemetry for $\gamma(t)$, quantum-stabilized telemetry eliminates inversion uncertainty, locking the reconstruction into a fully deterministic, singularity-resistant solution.
+* **Solid-State & Networked Scaling:** Scaling toward solid-state Optical Phased Arrays (OPAs) to eliminate moving parts entirely, enabling real-time spectral video streams, and deploying distributed citizen-science sensor networks.
+* **Broader Field Horizons:** Future applications may also extend into microscopy, archival astronomy, and forensic imaging, where flawed exposures contain recoverable multidimensional structure.
 
 ---
 
 ## References
+* Cho, T. S., Paris, S., Horn, B. K. P., & Freeman, W. T. (2011). [Blur Kernel Estimation Using the Radon Transform](https://people.csail.mit.edu/sparis/publi/2011/cvpr_radon/Cho_11_Blur_Kernel_Estimation.pdf). *Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)*.
 
 *[Bibliography and instrumentation schemas to be added]*
