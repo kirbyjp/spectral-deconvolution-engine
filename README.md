@@ -158,15 +158,50 @@ This integration path is optional and intended for users already operating motor
 
 ---
 
-## 6. Computational Processing: The Vector-Gradient & Deconvolution Pipeline
-* **Initial Wavelength Calibration:** Mapping pixel position to exact wavelengths ($\lambda$) using a known baseline reference source before processing targets.
-* **Inverting the Forward Model:** Translating the forward convolution into a solvable inverse problem across both telemetry-driven (non-blind) and image-driven (blind) operational modes.
-* **Vector-Gradient Field Analysis:** Bypassing classical edge-fitting transforms in favor of spatial-spectral vector-gradient analysis. By computing directional derivatives, magnitude, and orientation fields, the engine extracts motion vectors, chromatic spread, and stellar PSF signatures from data.
-* **Module 1: User-Guided Geometry & Path Rectification:** An interactive interface where the operator maps complex translation vectors or non-linear squiggles, allowing the software to perform Inverse Spatial Coordinate Mapping and unwarp distorted pixel geometry along the motion path.
-* **Module 2: Software-Guided Spectra & Automatic Isolation:** Employing spatial-spectral vector-gradient analysis to automatically sample intensity profiles, identify emission lines, and isolate spectral slices without relying on manual user drawing.
-* **Local Baseline Continuum Calibration (Stray-Light Subtraction):** A background-sampling mechanism that records static environment baselines (e.g., sampling ambient wall or sky flux) and subtracts that background floor from the smeared streak data before execution, ensuring background integrity is maintained during target collapse.
-* **Deterministic vs. Estimated Deconvolution:** Utilizing synchronized IMU/VCM telemetry logs (non-blind mode) or vector-gradient estimated kernels (blind mode) combined with perceptual log-scaling to execute Trajectory-Based Spatial Re-integration and collapse smeared energy back to its true source coordinates.
-* **Channel Realignment & Reconstruction:** Using homography and PSF-derived geometric correction to overlay anchor channels, reconstruct faint absorption lines, and translate monochrome intensity logs into quantitative 1D spectra, paralleling NASA narrowband imaging pipelines.
+## 6. Computational Processing: The Vector-Gradient and Deconvolution Pipeline
+
+* **Conceptual Status:**  
+  Vector-Gradient analysis is introduced as a proposed computational methodology. A reference implementation is planned but not yet complete. This section describes the intended pipeline conceptually, consistent with the document's status as a conceptual instrumentation and computational architecture.
+
+* **Initial Wavelength Calibration:**  
+  Mapping pixel position to exact wavelengths ($\lambda$) using a known baseline reference source before processing targets.
+
+* **Inverting the Forward Model:**  
+  Translating the forward convolution into a solvable inverse problem across both telemetry-driven and image-driven operational modes (defined below).
+
+* **Why Edge-Gradient Methods Do Not Apply (Cho et al.):**  
+  Classical edge-gradient methods assume extended-object geometry, where strong intensity discontinuities trace large scene boundaries. Astronomical point sources do not produce edges under motion blur; they produce thin traces swept out by point-like sources. There is no extended boundary for orientation statistics. This pipeline analyzes the trace itself as a continuous vector field along the trajectory.
+
+* **Vector-Gradient Field Computation:**  
+  The Vector-Gradient field is computed directly on the smeared trace rather than on scene edges. The trail left by a point source is treated as a parametric curve. Directional derivatives are computed at each point along the trace to extract local gradient vectors (orientation and magnitude of the smear). These vectors assemble into a continuous field used to reconstruct the motion trajectory $\gamma(t)$ directly from the image. The recovered $\gamma(t)$ then feeds into the flux-reassignment step defined in Section 2, using the same discrete spatial-domain inversion regardless of how $\gamma(t)$ was obtained.
+
+* **Module 1: User-Guided Geometry and Path Rectification:**  
+  An interactive interface where the operator maps complex translation vectors or non-linear squiggles, allowing the software to perform Inverse Spatial Coordinate Mapping and unwarp distorted pixel geometry along the motion path.  
+  Trail length consistency across multiple points in the frame is diagnostic of motion uniformity: constant trail length confirms constant sweep velocity $v(t)$ (Section 4), while variation indicates non-uniform or accelerating motion. The raw image thus contains partial evidence of the dwell-time velocity curve.
+
+**Figure 1.** Module 1 path rectification example. Red segment marks the smear trail; gold segment marks the flux-reassignment target.  
+![Figure 1](https://raw.githubusercontent.com/kirbyjp/spectral-deconvolution-engine/main/images/module1-path-rectification-example.png)
+
+* **Module 2: Software-Guided Spectra and Automatic Isolation:**  
+  Employing spatial-spectral vector-gradient analysis to automatically sample intensity profiles, identify emission lines, and isolate spectral slices without relying on manual user drawing.
+
+* **Local Baseline Continuum Calibration (Stray-Light Subtraction):**  
+  A background-sampling mechanism that records static environment baselines (e.g., sampling ambient wall or sky flux) and subtracts that background floor from the smeared streak data before execution, ensuring background integrity is maintained during target collapse.
+
+**Figure 2.** Local baseline calibration example. Purple circle marks the sampled background region used for stray-light subtraction.  
+![Figure 2](https://raw.githubusercontent.com/kirbyjp/spectral-deconvolution-engine/main/images/local-baseline-calibration-example.png)
+
+* **Deterministic vs. Estimated Deconvolution:**  
+  Utilizing synchronized IMU/VCM telemetry logs (non-blind mode) or vector-gradient estimated kernels (blind mode) combined with perceptual log-scaling to execute Trajectory-Based Spatial Re-integration and collapse smeared energy back to its true source coordinates.
+
+* **Channel Realignment and Reconstruction:**  
+  Using homography and PSF-derived geometric correction to overlay anchor channels, reconstruct faint absorption lines, and translate monochrome intensity logs into quantitative 1D spectra, paralleling NASA narrowband imaging pipelines.
+
+* **Integration with Telemetry (Blind and Non-Blind Convergence):**  
+  Both modes converge on the same reconstruction kernel $K_{\text{spatial}}$, ensuring the flux-reassignment step is identical regardless of which mode produced $\gamma(t)$.
+
+* **Unified Output:**  
+  The pipeline produces a motion-corrected spatial reconstruction and, when dispersion is present, a spectral reconstruction along the recovered trajectory. Both outputs rely on the same underlying vector-gradient field and flux-reassignment model.
 
 ---
 
