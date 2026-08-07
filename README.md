@@ -63,9 +63,12 @@ This framework presents an open-source, low-cost instrumentation design that byp
 ## 6. Computational Processing: The Vector-Gradient & Deconvolution Pipeline
 * **Initial Wavelength Calibration:** Mapping pixel position to exact wavelengths ($\lambda$) using a known baseline reference source before processing targets.
 * **Inverting the Forward Model:** Translating the forward convolution into a solvable inverse problem across both telemetry-driven (non-blind) and image-driven (blind) operational modes.
-* **Vector-Gradient Field Analysis:** Bypassing classical edge-fitting transforms in favor of spatial-spectral vector-gradient analysis. By computing directional derivatives, magnitude, and orientation fields, the engine extracts motion vectors, chromatic spread, and stellar PSF signatures directly from uninstrumented legacy data and astronomical plates.
-* **Deterministic vs. Estimated Deconvolution:** Utilizing synchronized IMU/VCM telemetry logs (when hardware is present) or vector-gradient estimated kernels (for legacy data) to mathematically reverse blur and separate split-path channels.
-* **Channel Realignment & Reconstruction:** Using homography and PSF-derived geometric correction to overlay anchor channels, reconstruct faint absorption lines, and translate monochrome intensity logs into quantitative 1D spectra (paralleling NASA narrowband imaging pipelines).
+* **Vector-Gradient Field Analysis:** Bypassing classical edge-fitting transforms in favor of spatial-spectral vector-gradient analysis. By computing directional derivatives, magnitude, and orientation fields, the engine extracts motion vectors, chromatic spread, and stellar PSF signatures from data.
+* **Module 1: User-Guided Geometry & Path Rectification:** An interactive interface where the operator maps complex translation vectors or non-linear squiggles (e.g., mapping a Red line span to a Yellow target), allowing the software to straighten and unwarp the distorted pixel geometry along the motion path.
+* **Module 2: Software-Guided Spectra & Automatic Isolation:** Employing spatial-spectral vector-gradient analysis to automatically sample intensity profiles, identify emission lines, and isolate spectral slices without relying on manual user drawing.
+* **Background Color Sampling & Baseline Subtraction:** A background-sampling mechanism that records static environment baselines (e.g., sampling a clean patch of a wall) and subtracts that background floor from the smeared streak data *before* compression, ensuring background integrity is maintained during target collapse.
+* **Deterministic vs. Estimated Deconvolution:** Utilizing synchronized IMU/VCM telemetry logs (when hardware is present) or vector-gradient estimated kernels (for legacy data) combined with perceptual log-scaling to mathematically reverse blur and compress flux back to a point source.
+* **Channel Realignment & Reconstruction:** Using homography and PSF-derived geometric correction to overlay anchor channels, reconstruct faint absorption lines, and translate monochrome intensity logs into quantitative 1D spectra, paralleling NASA narrowband imaging pipelines.
 
 ---
 
