@@ -81,10 +81,57 @@ This integration path is optional and intended for users already operating motor
 ---
 
 ## 4. Active Dwell-Time Modulation (Hardware-Level HDR)
-* **Active Kinematics & Slew Mechanics:** Dynamically modulating the speed of the dispersion mechanism during data collection.
-* **Dwell-Time Engineering:** Speeding up over blindingly bright continuum peaks to prevent pixel saturation, and slowing down over weak absorption lines to elevate faint photons above the read-noise floor.
-* **Single-Shot Dynamic Range Advantage:** Unlike exposure bracketing, which introduces motion-ghosting and alignment artifacts when targets shift between frames, dwell-time modulation performs a continuous single sweep. The velocity curve itself manages dynamic range, eliminating multi-frame registration errors entirely.
-* **Pixel Dilution Avoidance:** Prevents faint spectral features from being buried under noise due to multi-frame averaging.
+
+* **Active Kinematics and Slew Mechanics:**  
+  The dispersion mechanism (IMU-guided rig, stepper translation stage, or telescope mount) varies its instantaneous velocity $v(t)$ during the sweep.  
+  Dwell time at spatial or spectral coordinate $x$ scales inversely with velocity:  
+  $$\tau(x) \propto \frac{\Delta x}{v(x)}.$$  
+  Sweep velocity becomes the direct control variable for photon integration.
+
+* **Dwell-Time Engineering:**  
+  The accumulated signal at position $x$ is  
+  $$N_{\text{sig}}(x) = \Phi(x)\,\tau(x) = \Phi(x)\,\frac{\Delta x}{v(x)},$$  
+  where $\Phi(x)$ is the local photon flux.  
+  Two physical bounds define the feasible velocity band:
+  * *Saturation limit:*  
+    $$v(x) \ge \frac{\Phi(x)\Delta x}{N_{\text{FWC}}}$$  
+    to avoid exceeding full-well capacity.
+  * *Read-noise limit:*  
+    $$v(x) \le \frac{\Phi(x)\Delta x}{k\,\sigma_{\text{read}}}$$  
+    to keep faint features above detection threshold $k$.  
+  The velocity curve must remain between these limits, turning qualitative guidance into a concrete design equation.
+
+* **Effective Dynamic Range Gain:**  
+  The dynamic-range extension achievable through modulation alone is approximately  
+  $$DR_{\text{eff}} \approx DR_{\text{sensor}} \times \frac{v_{\max}}{v_{\min}}.$$  
+  This ties HDR performance directly to the mechanical velocity ratio the hardware can sustain.
+
+* **Control Mode (Open-Loop or Closed-Loop):**  
+  Dwell-time modulation requires a velocity profile $v(x)$ that can be generated either in open-loop form (precomputed from a flux estimate) or closed-loop form (adjusted in real time from sensor feedback).  
+  The architecture has not yet selected a control mode, and the hardware implications are deferred to Section 8.
+
+* **Single-Shot Dynamic Range Advantage:**  
+  Traditional bracketed HDR requires multiple frames, introducing ghosting, registration error, and PSF inconsistency.  
+  Dwell-time modulation performs HDR within a single continuous sweep, producing one coherent motion trace and one unified PSF model.
+
+* **Pixel Dilution Avoidance and Photon Statistics:**  
+  Multi-frame averaging dilutes faint features by mixing them with noise from brighter frames.  
+  Dwell-time modulation shapes photon arrival rate directly during acquisition.  
+  Because photon noise follows Poisson statistics,  
+  $$\text{SNR} \propto \sqrt{N_{\text{sig}}},$$  
+  increasing dwell time on faint absorption lines by a factor of $n$ improves SNR by $\sqrt{n}$.
+
+* **Link to Section 2 Reconstruction Weight $w(t)$:**  
+  The weighting term $w(t)$ used in the reconstruction model originates physically from dwell-time modulation:  
+  $$w(t) \propto \tau(t) = \frac{\Delta x}{v(t)}.$$  
+  This closes the loop between mechanical control and mathematical reconstruction.
+
+* **Integration with Tier 2 and Tier 3 Hardware:**  
+  Tier 2 rigs vary sweep velocity deterministically and log motion traces for reconstruction.  
+  Tier 3 dual-path systems synchronize dwell-time modulation across anchor and dispersive channels.  
+  Telescope-mount sweeps provide smooth macro-motion profiles that can be timestamp-aligned with exposure metadata to drive modulation without external inertial hardware.  
+  In all cases, the velocity and dwell-time curve become hardware-level metadata passed to the reconstruction engine.
+
 
 ---
 
